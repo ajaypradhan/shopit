@@ -4,16 +4,14 @@ const dotenv = require("dotenv");
 const connectDatabase = require("./config/database");
 
 // handel the unCaught exceptions
-process.on("uncaughtException",err=>{
-  console.log(`ERROR : ${err.message}`)
+process.on("uncaughtException", (err) => {
+  console.log(`ERROR : ${err.stack}`);
   console.log("Shutting down server due to uncaught exceptions");
-  process.exit(1)
-
-})
+  process.exit(1);
+});
 
 // setting config file
 dotenv.config({ path: "backend/config/config.env" });
-
 
 // connecting to DATABASE
 connectDatabase();
