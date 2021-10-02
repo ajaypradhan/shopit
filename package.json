@@ -7,14 +7,22 @@
     "start": "node backend/server.js",
     "dev": "SET NODE_ENV=DEVELOPMENT& SET PORT=4000& nodemon backend/server ",
     "prod": "SET NODE_ENV=PRODUCTION& SET PORT=4000& nodemon backend/server ",
-    "seeder":"node backend/utils/seeder.js"
+    "seeder": "node backend/utils/seeder.js"
   },
   "author": "ajay pradhan",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "mongoose": "^6.0.8"
+    "i": "^0.3.7",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.8",
+    "nodemailer": "^6.6.5",
+    "npm": "^7.24.1",
+    "validator": "^13.6.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.13"
