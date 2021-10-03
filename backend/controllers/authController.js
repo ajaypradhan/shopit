@@ -3,7 +3,7 @@ const User = require("../models/user");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const sendToken = require("../utils/jwtToken");
-
+const sendEmail = require("../utils/sendEmail");
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   const { name, email, password } = req.body;
 
@@ -44,6 +44,46 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   }
 
   sendToken(user, 200, res);
+});
+
+// forgot password => /api/v1/password/forgot
+exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    return next(new ErrorHandler("User not found with this email", 404));
+  }
+
+  // get reset token
+  const resetToken = user.getResetPasswordToken();
+
+  await user.save({ validateBeforeSave: false });
+
+  // create reset password url
+  const resetUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/api/v1/password/reset/${resetToken}`;
+
+  const message = `Your password reset token is as follow:\n\n${resetUrl}\n\nIf you hae not requested this email, then ignore it`;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "shopIT password recovery",
+      message,
+    });
+    res.status(200).json({
+      success: true,
+      message: `Email send to : ${user.email}`,
+    });
+  } catch (error) {
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save({ validateBeforeSave: false });
+
+    return next(new ErrorHandler(error.message, 500));
+  }
 });
 
 //logout user => /api/v1/logout
