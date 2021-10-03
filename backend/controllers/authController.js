@@ -7,6 +7,7 @@ const sendEmail = require("../utils/sendEmail");
 
 const crypto = require("crypto");
 
+// register user
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   const { name, email, password } = req.body;
 
@@ -183,6 +184,26 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
   await user.save();
 
   sendToken(user, 200, res);
+});
+
+// update user profile => /api/v1/me/update
+exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
+  const newUser = {
+    name: req.body.name,
+    email: req.body.email,
+  };
+
+  // TODO: update avatar
+
+  const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+    new: true,
+    runValidator: true,
+    useFindAndModify: false,
+  });
+
+  res.status(200).json({
+    success: true,
+  });
 });
 
 //logout user => /api/v1/logout
