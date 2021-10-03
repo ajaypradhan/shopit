@@ -2,12 +2,13 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Please enter your name"],
-    maxlength: [30, "Your name cannot exceed 30 characters"],
+    maxLength: [30, "Your name cannot exceed 30 characters"],
   },
   email: {
     type: String,
@@ -18,7 +19,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Please enter your password"],
-    minlength: [6, "Password must be longer than 6 characters"],
+    minlength: [6, "Your password must be longer than 6 characters"],
     select: false,
   },
   avatar: {
