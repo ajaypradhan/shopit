@@ -5,19 +5,19 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter product name"],
     trim: true,
-    maxlength: [100, "Product name cannot exceed 100 character"],
+    maxLength: [100, "Product name cannot exceed 100 characters"],
   },
   price: {
     type: Number,
     required: [true, "Please enter product price"],
-    maxlength: [5, "Product name cannot exceed 5 character"],
+    maxLength: [5, "Product name cannot exceed 5 characters"],
     default: 0.0,
   },
   description: {
     type: String,
     required: [true, "Please enter product description"],
   },
-  rating: {
+  ratings: {
     type: Number,
     default: 0,
   },
@@ -35,12 +35,12 @@ const productSchema = new mongoose.Schema({
   ],
   category: {
     type: String,
-    required: [true, "Please select category for the product"],
+    required: [true, "Please select category for this product"],
     enum: {
       values: [
         "Electronics",
-        "Camera",
-        "Laptop",
+        "Cameras",
+        "Laptops",
         "Accessories",
         "Headphones",
         "Food",
@@ -51,17 +51,17 @@ const productSchema = new mongoose.Schema({
         "Outdoor",
         "Home",
       ],
-      message: "Please select correct category for the product",
+      message: "Please select correct category for product",
     },
   },
   seller: {
     type: String,
-    required: [true, "Please enter product seller "],
+    required: [true, "Please enter product seller"],
   },
   stock: {
     type: Number,
-    required: [true, "Please enter stock for the product"],
-    maxlength: [5, "Product stock cannot exceed 5 character"],
+    required: [true, "Please enter product stock"],
+    maxLength: [5, "Product name cannot exceed 5 characters"],
     default: 0,
   },
   numOfReviews: {
@@ -70,6 +70,11 @@ const productSchema = new mongoose.Schema({
   },
   reviews: [
     {
+      user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+        required: true,
+      },
       name: {
         type: String,
         required: true,
@@ -84,9 +89,14 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+    required: true,
+  },
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
 });
 
