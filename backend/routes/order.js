@@ -5,6 +5,7 @@ const {
   newOrder,
   getSingleOrder,
   myOrders,
+  updateOrder,
 } = require("../controllers/orderController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
@@ -16,5 +17,9 @@ router.route("/orders/me").get(isAuthenticatedUser, myOrders);
 router
   .route("/admin/orders")
   .get(isAuthenticatedUser, authorizeRoles("admin"), myOrders);
+
+router
+  .route("/admin/order/:id")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), updateOrder);
 
 module.exports = router;
