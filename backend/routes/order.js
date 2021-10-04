@@ -9,7 +9,12 @@ const {
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
 router.route("/order/new").post(isAuthenticatedUser, newOrder);
-router.route("/order/:id").post(isAuthenticatedUser, getSingleOrder);
-router.route("/orders/me").post(isAuthenticatedUser, myOrders);
+router.route("/order/:id").get(isAuthenticatedUser, getSingleOrder);
+router.route("/orders/me").get(isAuthenticatedUser, myOrders);
+
+// admin routes
+router
+  .route("/admin/orders")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), myOrders);
 
 module.exports = router;
