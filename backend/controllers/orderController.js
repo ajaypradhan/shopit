@@ -109,3 +109,18 @@ async function updateStock(id, quantity) {
 
   product.save({ validateBeforeSave: false });
 }
+
+// delete order => /api/v1/admin/order/:id
+exports.deleteOrder = catchAsyncErrors(async (req, res, next) => {
+  const order = await Order.findById(req.param.id);
+
+  if (!order) {
+    return next(new ErrorHandler("order not found with this ID", 400));
+  }
+
+  await order.remove();
+
+  res.status(200).json({
+    success: true,
+  });
+});
